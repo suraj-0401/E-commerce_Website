@@ -13,18 +13,18 @@ app.use(cors()); // Enable CORS for all routes
 
 // Create a transporter
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587, // For TLS
-    secure: false, // Set to true if using port 465
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    tls: {
-      rejectUnauthorized: false, // Allow self-signed certificates (not recommended for production)
-    },
-  });
-  
+  host: 'smtp.gmail.com',
+  port: 587, // For TLS
+  secure: false, // Set to true if using port 465
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false, // Allow self-signed certificates (not recommended for production)
+  },
+});
+
 // Email sending route
 app.post('/api/subscribe', (req, res) => {
   const { email } = req.body;
@@ -53,10 +53,10 @@ app.post('/api/subscribe', (req, res) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
-      return res.status(500).json({ error: 'Failed to send email' });
+      return res.status(500).json({ error: 'An error occurred. Please try again later.' });
     }
     console.log('Email sent:', info.response);
-    res.status(200).json({ message: 'Subscription successful' });
+    res.status(200).json({ message: 'Subscription successful! Check your email for recommended products.' });
   });
 });
 
